@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Erila & Justin Wedding RSVP</title>
+
+<style>
+
+body{
+font-family:'Segoe UI',sans-serif;
+background:#fdf6f9;
+margin:0;
+text-align:center;
+color:#444;
+}
+
+.header{
+background:url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486") center/cover;
+height:320px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+}
+
+.header h1{
+font-size:48px;
+background:rgba(0,0,0,0.45);
+padding:12px 30px;
+border-radius:10px;
+}
+
+.container{
+max-width:650px;
+margin:auto;
+padding:30px;
+}
+
+.date{
+font-size:22px;
+margin:15px 0;
+}
+
+.venue{
+margin-bottom:20px;
+font-size:18px;
+}
+
+.countdown{
+font-size:22px;
+margin:20px 0;
+color:#b76e79;
+font-weight:bold;
+}
+
+.form-box{
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 6px 16px rgba(0,0,0,0.12);
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin:10px 0;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:16px;
+}
+
+button{
+background:#b76e79;
+color:white;
+border:none;
+padding:12px;
+font-size:18px;
+border-radius:6px;
+cursor:pointer;
+width:100%;
+}
+
+button:hover{
+background:#a85d67;
+}
+
+.success{
+color:green;
+margin-top:15px;
+font-weight:bold;
+}
+
+.map{
+margin-top:30px;
+}
+
+.footer{
+margin-top:30px;
+font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h1>Erila & Justin</h1>
+</div>
+
+<div class="container">
+
+<h2>You're Invited!</h2>
+<p>Join us to celebrate our wedding 💍</p>
+
+<div class="date">
+<strong>August 15, 2026</strong>
+</div>
+
+<div class="venue">
+The Meridian Venue<br>
+351 Southwind Ln, Fairview, TX
+</div>
+
+
+
+<h2>RSVP</h2>
+
+<form id="rsvpForm">
+
+<input type="text" id="name" placeholder="Full Name" required>
+
+<input type="email" id="email" placeholder="Email Address" required>
+
+<input type="number" id="guests" placeholder="Number of Guests" min="1" max="6" required>
+
+<select id="response" required>
+<option value="">Select Response</option>
+<option value="Accept with pleasure">Accept with pleasure</option>
+<option value="Regretfully decline">Regretfully decline</option>
+</select>
+
+<button type="submit">Confirm Reservation</button>
+
+</form>
+
+<div class="success" id="message"></div>
+
+</div>
+
+<div class="map">
+
+<iframe
+width="100%"
+height="250"
+style="border:0"
+loading="lazy"
+allowfullscreen
+src="https://maps.google.com/maps?q=351%20Southwind%20Ln%20Fairview%20TX&t=&z=13&ie=UTF8&iwloc=&output=embed">
+</iframe>
+
+</div>
+
+<div class="footer">
+Questions? Contact us at<br>
+<strong>erilaandjustin@gmail.com</strong>
+</div>
+
+</div>
+
+<script>
+
+/* GOOGLE SCRIPT URL */
+
+const scriptURL = "PASTE_YOUR_GOOGLE_SCRIPT_URL_HERE";
+
+
+/* FORM SUBMIT */
+
+document.getElementById("rsvpForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const name = document.getElementById("name").value;
+const email = document.getElementById("email").value;
+const guests = document.getElementById("guests").value;
+const response = document.getElementById("response").value;
+
+fetch(scriptURL,{
+method:"POST",
+body:new URLSearchParams({
+name:name,
+email:email,
+guests:guests,
+response:response
+})
+})
+.then(res=>res.text())
+.then(()=>{
+
+document.getElementById("message").innerHTML =
+"🎉 Thank you " + name + "! Your RSVP has been recorded.";
+
+document.getElementById("rsvpForm").reset();
+
+});
+
+});
+
+
+/* WEDDING COUNTDOWN */
+
+const weddingDate = new Date("Aug 15, 2026 00:00:00").getTime();
+
+setInterval(function(){
+
+const now = new Date().getTime();
+const distance = weddingDate - now;
+
+const days = Math.floor(distance/(1000*60*60*24));
+const hours = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+const minutes = Math.floor((distance%(1000*60*60))/(1000*60));
+
+document.getElementById("countdown").innerHTML =
+days + " days " + hours + " hrs " + minutes + " mins until our big day 💍";
+
+},1000);
+
+</script>
+
+</body>
+</html>
